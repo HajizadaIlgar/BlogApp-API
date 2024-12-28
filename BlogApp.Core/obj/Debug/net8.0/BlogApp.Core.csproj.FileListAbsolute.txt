@@ -1,0 +1,12 @@
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\bin\Debug\net8.0\BlogApp.Core.deps.json
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\bin\Debug\net8.0\BlogApp.Core.dll
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\bin\Debug\net8.0\BlogApp.Core.pdb
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.AssemblyInfoInputs.cache
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.AssemblyInfo.cs
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.csproj.CoreCompileInputs.cache
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.sourcelink.json
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.dll
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\refint\BlogApp.Core.dll
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\BlogApp.Core.pdb
+C:\Users\Ilqar\Desktop\BlogApp\BlogApp\BlogApp.Core\obj\Debug\net8.0\ref\BlogApp.Core.dll

@@ -1,0 +1,98 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{45948779-8372-4E3A-AC36-F893A30C0E17}|BlogApp.DAL\\BlogApp.DAL.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.dal\\repositories\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{45948779-8372-4E3A-AC36-F893A30C0E17}|BlogApp.DAL\\BlogApp.DAL.csproj|solutionrelative:blogapp.dal\\repositories\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{45948779-8372-4E3A-AC36-F893A30C0E17}|BlogApp.DAL\\BlogApp.DAL.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.dal\\blogapp.dal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{45948779-8372-4E3A-AC36-F893A30C0E17}|BlogApp.DAL\\BlogApp.DAL.csproj|solutionrelative:blogapp.dal\\blogapp.dal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F7D58ED0-B4B1-43B9-AA3C-99033AA07764}|BlogApp.Core\\BlogApp.Core.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.core\\repositories\\icollectionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F7D58ED0-B4B1-43B9-AA3C-99033AA07764}|BlogApp.Core\\BlogApp.Core.csproj|solutionrelative:blogapp.core\\repositories\\icollectionrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F7D58ED0-B4B1-43B9-AA3C-99033AA07764}|BlogApp.Core\\BlogApp.Core.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.core\\repositories\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F7D58ED0-B4B1-43B9-AA3C-99033AA07764}|BlogApp.Core\\BlogApp.Core.csproj|solutionrelative:blogapp.core\\repositories\\igenericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 25,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BlogApp.DAL",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.DAL\\BlogApp.DAL.csproj",
+              "RelativeDocumentMoniker": "BlogApp.DAL\\BlogApp.DAL.csproj",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.DAL\\BlogApp.DAL.csproj",
+              "RelativeToolTip": "BlogApp.DAL\\BlogApp.DAL.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-27T17:53:28.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GenericRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.DAL\\Repositories\\GenericRepository.cs",
+              "RelativeDocumentMoniker": "BlogApp.DAL\\Repositories\\GenericRepository.cs",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.DAL\\Repositories\\GenericRepository.cs",
+              "RelativeToolTip": "BlogApp.DAL\\Repositories\\GenericRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-27T17:53:53.19Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ICollectionRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Core\\Repositories\\ICollectionRepository.cs",
+              "RelativeDocumentMoniker": "BlogApp.Core\\Repositories\\ICollectionRepository.cs",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Core\\Repositories\\ICollectionRepository.cs",
+              "RelativeToolTip": "BlogApp.Core\\Repositories\\ICollectionRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-27T17:44:30.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IGenericRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Core\\Repositories\\IGenericRepository.cs",
+              "RelativeDocumentMoniker": "BlogApp.Core\\Repositories\\IGenericRepository.cs",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Core\\Repositories\\IGenericRepository.cs",
+              "RelativeToolTip": "BlogApp.Core\\Repositories\\IGenericRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-27T17:29:26.177Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedHeight": 25,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
