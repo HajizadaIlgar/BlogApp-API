@@ -11,6 +11,7 @@ public static class ServiceRegistration
     {
         services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }
