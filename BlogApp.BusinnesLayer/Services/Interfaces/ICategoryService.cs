@@ -4,6 +4,6 @@ namespace BlogApp.BusinnesLayer.Services.Interfaces;
 
 public interface ICategoryService
 {
-    Task<IEnumerable<CategoryListItem>> GetAllAsync();
+    Task<List<CategoryListItem>> GetAllAsync();
     Task<int> CreateAsync(CategoryCreateDto dto);
 }

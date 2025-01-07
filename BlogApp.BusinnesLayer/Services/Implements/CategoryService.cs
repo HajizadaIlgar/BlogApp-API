@@ -16,7 +16,7 @@ public class CategoryService(ICategoryRepository _repo) : ICategoryService
         return category.Id;
     }
 
-    public async Task<IEnumerable<CategoryListItem>> GetAllAsync()
+    public async Task<List<CategoryListItem>> GetAllAsync()
     {
         return await _repo.GetAll().Select(x => new CategoryListItem
         {

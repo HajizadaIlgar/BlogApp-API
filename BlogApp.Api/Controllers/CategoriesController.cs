@@ -1,12 +1,11 @@
 ﻿using BlogApp.BusinnesLayer.DTOs.CategoryDTOs;
 using BlogApp.BusinnesLayer.Helpers;
 using BlogApp.BusinnesLayer.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApp.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class CategoriesController(ICategoryService _service) : ControllerBase
 {
@@ -23,7 +22,6 @@ public class CategoriesController(ICategoryService _service) : ControllerBase
 
 
     [HttpGet("[action]")]
-    [Authorize]
     public async Task<IActionResult> Get()
     {
         return Ok(await _service.GetAllAsync());
