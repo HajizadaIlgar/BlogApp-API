@@ -1,0 +1,824 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>LOTO Game</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg: #0f1724;
+            --card-bg: #0b1320;
+            --panel: #0e1a2b;
+            --accent: #6ee7b7;
+            --accent2: #ffd166;
+            --muted: #9aa7b2;
+            --glass: rgba(255,255,255,0.04);
+            --pill: rgba(255,255,255,0.03);
+            --radius: 14px;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(180deg,#071225 0%, #071827 100%);
+            color: #e6eef6;
+        }
+
+        .balance-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .line-popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ffcb3a 0%, #ff9a3c 100%);
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 28px;
+            font-weight: bold;
+            z-index: 9999;
+            animation: pop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 10px 40px rgba(255, 203, 58, 0.6);
+            color: #000;
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0.3) translateX(-166%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1) translateX(-50%);
+                opacity: 1;
+            }
+        }
+
+        .app {
+            max-width: 1200px;
+            margin: 28px auto;
+            padding: 22px;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 20px;
+        }
+
+        .game-area {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: var(--pill);
+            border: 1px solid rgba(255,255,255,0.04);
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 14px;
+        }
+
+            .btn:hover:not(:disabled) {
+                background: rgba(255,255,255,0.08);
+                transform: translateY(-2px);
+            }
+
+            .btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .btn.ghost {
+                color: var(--muted);
+                background: transparent;
+                border: 1px dashed rgba(255,255,255,0.03);
+            }
+
+            .btn.danger {
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+                color: white;
+            }
+
+        .panel {
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03));
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+
+        .drawn {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .ball {
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: 700;
+            background: linear-gradient(180deg,#ffd166,#ffb703);
+            color: #08121b;
+            box-shadow: 0 10px 30px rgba(255,177,7,0.12);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+            .ball::before {
+                content: '';
+                position: absolute;
+                top: 15%;
+                left: 20%;
+                width: 30%;
+                height: 30%;
+                background: radial-gradient(circle, rgba(255,255,255,0.4), transparent);
+                border-radius: 50%;
+                filter: blur(8px);
+            }
+
+        .history {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+            max-width: 560px;
+        }
+
+            .history .hitem {
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                background: var(--pill);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                color: var(--muted);
+            }
+
+        .card-wrap {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .loto-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+            padding: 14px;
+            border-radius: 12px;
+            width: 460px;
+            box-shadow: 0 6px 18px rgba(2,6,23,0.45);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 6px;
+            background: transparent;
+        }
+
+        .cell {
+            height: 38px;
+            border-radius: 8px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--muted);
+            font-size: 14px;
+            transition: transform 220ms ease, background 240ms ease, color 240ms ease, box-shadow 240ms ease;
+        }
+
+            .cell.blank {
+                background: transparent;
+            }
+
+            .cell.marked {
+                background: linear-gradient(180deg,#6ee7b7,#2dd4bf);
+                color: #042822;
+                box-shadow: 0 6px 18px rgba(45,212,191,0.12);
+                transform: translateY(-4px);
+            }
+
+        .sidebar {
+            padding: 12px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.02));
+            border-radius: 12px;
+            height: fit-content;
+        }
+
+        .players {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 10px;
+            background: var(--glass);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(180deg,#ffd166,#ffb703);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #07121b;
+            font-weight: 800;
+        }
+
+        .status {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .error-banner {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 10001;
+            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.4);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(-100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        #gameOverOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 2000;
+            color: #fff;
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+            #gameOverOverlay.show {
+                display: flex;
+            }
+
+        @media (max-width:980px) {
+            .app {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+
+            .loto-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="game-area">
+            <div class="topbar">
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <div class="title">🎲 LOTO GAME</div>
+                    <div id="roomNameDisplay" style="font-size:14px;color:var(--muted)"></div>
+                    <div id="balanceDisplay" class="balance-display" style="display:none">
+                        💰 <span id="balanceAmount">0</span> coin
+                    </div>
+                </div>
+                <div class="controls">
+                    <button id="startBtn" class="btn ghost" disabled>Oyunu Başlat</button>
+                    <button id="bingoBtn" class="btn" style="background: linear-gradient(135deg, #6ee7b7, #2dd4bf);" disabled>🎯 LOTO</button>
+                    <button id="backToLobbyBtn" class="btn danger">← Lobbiyə Qayıt</button>
+                    <button id="muteBtn" class="btn ghost" style="padding:8px 10px;">🔊</button>
+                </div>
+            </div>
+
+            <div class="panel drawn">
+                <div style="flex:0 0 auto">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Son çəkilən</div>
+                    <div id="bigBall" class="ball">--</div>
+                </div>
+
+                <div style="flex:1 1 auto">
+                    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Keçmiş nömrələr</div>
+                    <div id="history" class="history"></div>
+                </div>
+            </div>
+
+            <div class="card-wrap">
+                <div class="loto-card panel" id="myCardPanel" style="display:none">
+                    <div class="card-header">
+                        <div style="font-weight:700">✨ Sənin Kartın</div>
+                        <div style="font-size:13px;color:var(--muted)">15 nömrə</div>
+                    </div>
+                    <div id="cardGrid" class="card-grid"></div>
+                </div>
+
+                <div style="flex:1;min-width:220px">
+                    <div class="panel" style="border-radius:12px;">
+                        <div style="font-weight:700;margin-bottom:8px">📋 Qaydalar</div>
+                        <div style="font-size:13px;color:var(--muted);line-height:1.6">
+                            • <strong>Giriş haqqı:</strong> 10 coin<br>
+                            • <strong>Xətt mükafatı:</strong> 10 coin<br>
+                            • <strong>Bingo qalibi:</strong> 50 coin<br>
+                            • Kart: 3 sətr × 9 sütun (15 nömrə)<br>
+                            • Server avtomatik 1-90 arası nömrə çəkir
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-weight:700">👥 Oyunçular</div>
+                <div id="playersCount" style="font-size:13px;color:var(--muted)">0</div>
+            </div>
+
+            <div id="players" class="players"></div>
+
+            <div class="status">
+                <div style="font-weight:700;margin-bottom:6px">Status</div>
+                <div id="statusText">Serverə qoşulur...</div>
+            </div>
+        </aside>
+    </div>
+
+    <div id="gameOverOverlay">
+        <div style="font-size:64px;margin-bottom:20px">🏆</div>
+        <div id="gameOverText">OYUN BİTDİ!</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomIdFromUrl = urlParams.get('roomId');
+        const passwordFromUrl = urlParams.get('password');
+
+        let connection = null;
+        let currentRoomId = roomIdFromUrl;
+        let myCard = null;
+        let drawnNumbers = [];
+        let completedRows = new Set();
+        let isMuted = false;
+        let myUserName = "";
+        let myFullName = "";
+        let myBalance = 0;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function getToken() {
+            const raw = document.cookie
+                .split("; ")
+                .find(row => row.startsWith("AuthToken="))
+                ?.split("=")[1];
+
+            if (!raw) return "";
+
+            let token = decodeURIComponent(raw).trim();
+            if (token.endsWith(".")) token = token.slice(0, -1);
+            return token;
+        }
+
+        function showError(message) {
+            const banner = document.createElement('div');
+            banner.className = 'error-banner';
+            banner.textContent = message;
+            document.body.appendChild(banner);
+            setTimeout(() => banner.remove(), 5000);
+        }
+
+        function playSound(frequency, duration, type = 'sine', volume = 0.3) {
+            if (isMuted) return;
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            oscillator.start(audioCtx.currentTime);
+            oscillator.stop(audioCtx.currentTime + duration);
+        }
+
+        function playBallDraw() {
+            playSound(400, 0.08, 'sine', 0.2);
+            setTimeout(() => playSound(600, 0.08, 'sine', 0.25), 50);
+            setTimeout(() => playSound(800, 0.12, 'triangle', 0.3), 100);
+        }
+
+        function playMark() {
+            playSound(1200, 0.08, 'sine', 0.2);
+        }
+
+        function playLineComplete() {
+            playSound(523, 0.15, 'triangle', 0.3);
+            setTimeout(() => playSound(659, 0.15, 'triangle', 0.3), 120);
+            setTimeout(() => playSound(784, 0.2, 'triangle', 0.35), 240);
+        }
+
+        function playWin() {
+            const notes = [523, 659, 784, 1047, 1319];
+            notes.forEach((note, i) => {
+                setTimeout(() => playSound(note, 0.3, 'sine', 0.35), i * 120);
+            });
+        }
+
+        const muteBtn = document.getElementById("muteBtn");
+        const startBtn = document.getElementById("startBtn");
+        const bingoBtn = document.getElementById("bingoBtn");
+        const backToLobbyBtn = document.getElementById("backToLobbyBtn");
+        const playersDiv = document.getElementById("players");
+        const playersCount = document.getElementById("playersCount");
+        const statusText = document.getElementById("statusText");
+        const bigBall = document.getElementById("bigBall");
+        const historyDiv = document.getElementById("history");
+        const myCardPanel = document.getElementById("myCardPanel");
+        const cardGrid = document.getElementById("cardGrid");
+        const gameOverOverlay = document.getElementById("gameOverOverlay");
+        const gameOverText = document.getElementById("gameOverText");
+        const balanceDisplay = document.getElementById("balanceDisplay");
+        const balanceAmount = document.getElementById("balanceAmount");
+        const roomNameDisplay = document.getElementById("roomNameDisplay");
+
+        muteBtn.addEventListener("click", () => {
+            isMuted = !isMuted;
+            muteBtn.textContent = isMuted ? "🔇" : "🔊";
+        });
+
+        backToLobbyBtn.addEventListener("click", async () => {
+            if (currentRoomId && connection) {
+                await connection.invoke("LeaveRoom").catch(() => { });
+            }
+            window.location.href = "/FrontEnd/loto-room.html";
+        });
+
+        function renderPlayers(list) {
+            playersDiv.innerHTML = "";
+            playersCount.textContent = (list || []).length;
+            (list || []).forEach((p) => {
+                const el = document.createElement("div");
+                el.className = "player";
+                const initial = (p[0] || "?").toUpperCase();
+                el.innerHTML = `<div class="avatar">${initial}</div><div style="flex:1"><div style="font-weight:700">${p}</div></div>`;
+                playersDiv.appendChild(el);
+            });
+        }
+
+        function renderCard(card, balance) {
+            myCard = card;
+            myBalance = balance;
+            myCardPanel.style.display = "block";
+            cardGrid.innerHTML = "";
+
+            balanceAmount.textContent = balance;
+            balanceDisplay.style.display = "inline-flex";
+
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 9; c++) {
+                    const val = card[r][c];
+                    const cell = document.createElement("div");
+                    cell.className = "cell " + (val === null ? "blank" : "");
+                    cell.dataset.r = r;
+                    cell.dataset.c = c;
+                    cell.textContent = val === null ? "" : val;
+
+                    if (val !== null && drawnNumbers.includes(val)) {
+                        cell.classList.add("marked");
+                    }
+
+                    cardGrid.appendChild(cell);
+                }
+            }
+
+            bingoBtn.disabled = false;
+            checkAllRows();
+        }
+
+        function addToHistory(num) {
+            if (!drawnNumbers.includes(num)) {
+                drawnNumbers.push(num);
+                playBallDraw();
+            }
+
+            bigBall.textContent = num;
+
+            historyDiv.innerHTML = "";
+            const last20 = drawnNumbers.slice(-20).reverse();
+            last20.forEach((n, index) => {
+                const d = document.createElement("div");
+                d.className = "hitem";
+                d.textContent = n;
+
+                if (index === 0) {
+                    d.style.background = 'linear-gradient(135deg, #ffd166, #ffb703)';
+                    d.style.color = '#08121b';
+                    d.style.fontWeight = '900';
+                    d.style.transform = 'scale(1.1)';
+                }
+
+                historyDiv.appendChild(d);
+            });
+
+            markNumberOnCard(num);
+        }
+
+        function markNumberOnCard(num) {
+            if (!myCard) return;
+
+            for (let r = 0; r < 3; r++) {
+                for (let c = 0; c < 9; c++) {
+                    if (myCard[r][c] === num) {
+                        const cellIndex = r * 9 + c;
+                        const cell = cardGrid.children[cellIndex];
+                        if (!cell.classList.contains("marked")) {
+                            cell.classList.add("marked");
+                            playMark();
+                            checkRowCompletion(r);
+                        }
+                    }
+                }
+            }
+        }
+
+        function checkRowCompletion(rowIndex) {
+            if (completedRows.has(rowIndex)) return;
+
+            let allMarked = true;
+            let hasNumbers = false;
+
+            for (let c = 0; c < 9; c++) {
+                const val = myCard[rowIndex][c];
+                if (val !== null) {
+                    hasNumbers = true;
+                    const cell = cardGrid.children[rowIndex * 9 + c];
+                    if (!cell.classList.contains("marked")) {
+                        allMarked = false;
+                        break;
+                    }
+                }
+            }
+
+            if (hasNumbers && allMarked) {
+                completedRows.add(rowIndex);
+                playLineComplete();
+                showLinePopup(myFullName || myUserName);
+
+                connection.invoke("LineCompleted", rowIndex).catch(err => {
+                    console.error("LineCompleted error:", err);
+                });
+            }
+        }
+
+        function checkAllRows() {
+            for (let r = 0; r < 3; r++) {
+                checkRowCompletion(r);
+            }
+        }
+
+        function showLinePopup(playerName) {
+            const popup = document.createElement('div');
+            popup.className = 'line-popup';
+            popup.textContent = `🎯 ${playerName} - XƏT TAMAMLANDI!`;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 3000);
+        }
+
+        function createConnection() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/lotoHub", {
+                    accessTokenFactory: () => getToken()
+                })
+                .withAutomaticReconnect()
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            setupConnectionHandlers();
+            return connection;
+        }
+
+        function setupConnectionHandlers() {
+            connection.on("UserData", (data) => {
+                console.log("✅ UserData:", data);
+                myUserName = data.username;
+                myFullName = data.fullName || data.username;
+                myBalance = data.balance;
+                balanceAmount.textContent = data.balance;
+                balanceDisplay.style.display = "inline-flex";
+                statusText.textContent = `✅ ${myFullName}`;
+            });
+
+            connection.on("JoinedRoom", (data) => {
+                console.log("✅ Joined room:", data);
+                currentRoomId = data.roomId;
+                roomNameDisplay.textContent = `📍 ${data.roomName}`;
+                renderCard(data.card, data.balance);
+                startBtn.disabled = false;
+                bingoBtn.disabled = false;
+                statusText.textContent = "✅ Room-a qoşuldunuz. Oyunu başlatmaq üçün düyməyə basın.";
+            });
+
+            connection.on("NumberDrawn", (num) => {
+                console.log("🎲 Number:", num);
+                addToHistory(num);
+            });
+
+            connection.on("PlayersList", renderPlayers);
+
+            connection.on("LineCompleted", (name) => {
+                if (name !== myFullName && name !== myUserName) {
+                    showLinePopup(name);
+                }
+            });
+
+            connection.on("GameStarted", () => {
+                completedRows.clear();
+                statusText.textContent = "🎮 Oyun başladı!";
+                startBtn.disabled = true;
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+            });
+
+            connection.on("GameOver", message => {
+                gameOverText.textContent = message;
+                gameOverOverlay.classList.add("show");
+                bingoBtn.disabled = true;
+                playWin();
+
+                if (message.includes(myFullName) || message.includes(myUserName)) {
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                }
+
+                setTimeout(() => {
+                    gameOverOverlay.classList.remove("show");
+                    window.location.href = "/FrontEnd/loto-room.html";
+                }, 5000);
+            });
+
+            connection.on("BalanceUpdated", (newBalance) => {
+                myBalance = newBalance;
+                balanceAmount.textContent = newBalance;
+            });
+
+            connection.on("JoinError", (errorMsg) => {
+                showError(errorMsg);
+                setTimeout(() => window.location.href = "/FrontEnd/loto-room.html", 2000);
+            });
+
+            connection.on("BingoError", (errorMsg) => {
+                showError(errorMsg);
+            });
+
+            connection.on("GameReset", () => {
+                window.location.href = "/FrontEnd/loto-room.html";
+            });
+
+            connection.on("PlayerJoined", (name) => {
+                console.log(`✅ ${name} joined`);
+            });
+
+            connection.on("PlayerLeft", (name) => {
+                console.log(`❌ ${name} left`);
+            });
+
+            connection.on("LeftRoom", () => {
+                window.location.href = "/FrontEnd/loto-room.html";
+            });
+
+            connection.onreconnecting(() => {
+                statusText.textContent = "🔄 Yenidən qoşulur...";
+            });
+
+            connection.onreconnected(() => {
+                statusText.textContent = "✅ Yenidən qoşuldu";
+                if (currentRoomId) {
+                    connection.invoke("JoinRoom", currentRoomId, null).catch(() => { });
+                }
+            });
+
+            connection.onclose(() => {
+                statusText.textContent = "❌ Əlaqə kəsildi";
+            });
+        }
+
+        startBtn.addEventListener("click", async () => {
+            try {
+                await connection.invoke("StartGame");
+                startBtn.disabled = true;
+            } catch (err) {
+                console.error("StartGame error:", err);
+                showError("Oyunu başlatmaq alınmadı");
+            }
+        });
+
+        bingoBtn.addEventListener("click", () => {
+            connection.invoke("Bingo").catch(err => {
+                console.error("Bingo error:", err);
+            });
+        });
+
+        async function init() {
+            if (!roomIdFromUrl) {
+                showError("❌ Room ID tapılmadı");
+                setTimeout(() => window.location.href = "/FrontEnd/loto-room.html", 2000);
+                return;
+            }
+
+            try {
+                connection = createConnection();
+                await connection.start();
+                console.log("✅ SignalR connected");
+
+                // Room-a avtomatik qoşul
+                await connection.invoke("JoinRoom", roomIdFromUrl, passwordFromUrl || null);
+
+            } catch (err) {
+                console.error("❌ Connection error:", err);
+                showError("Serverə qoşulmaq alınmadı");
+                setTimeout(() => window.location.href = "/FrontEnd/loto-room.html", 2000);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

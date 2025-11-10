@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.DAL", "BlogApp.DAL\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogApp.BusinnesLayer", "BlogApp.BusinnesLayer\BlogApp.BusinnesLayer.csproj", "{FDB25775-F6CC-4713-A7ED-E885821471B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumeWebAPI", "ConsumeWebAPI\ConsumeWebAPI.csproj", "{17838AB8-2564-476F-8607-E6FF8FCA78AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumeWebMVC", "ConsumeWebMVC\ConsumeWebMVC.csproj", "{F00D44E4-B241-41DC-8076-F2325FE418E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{FDB25775-F6CC-4713-A7ED-E885821471B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDB25775-F6CC-4713-A7ED-E885821471B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB25775-F6CC-4713-A7ED-E885821471B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17838AB8-2564-476F-8607-E6FF8FCA78AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17838AB8-2564-476F-8607-E6FF8FCA78AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17838AB8-2564-476F-8607-E6FF8FCA78AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17838AB8-2564-476F-8607-E6FF8FCA78AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F00D44E4-B241-41DC-8076-F2325FE418E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F00D44E4-B241-41DC-8076-F2325FE418E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F00D44E4-B241-41DC-8076-F2325FE418E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F00D44E4-B241-41DC-8076-F2325FE418E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

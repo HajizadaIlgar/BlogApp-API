@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EtAYHXaM08g=",
+  "dgSpecHash": "2hK+Z+LpULQ=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\ConsumeWebAPI.csproj",
+  "projectFilePath": "C:\\Users\\Ilqar\\Desktop\\API\\BlogApp-API\\ConsumeWebAPI\\ConsumeWebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ilqar\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Ilqar\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

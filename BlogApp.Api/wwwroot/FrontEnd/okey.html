@@ -1,0 +1,992 @@
+﻿    <!DOCTYPE html>
+    <html lang="az">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Okey - Oyun Masası</title>
+        <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@7.0.0/dist/browser/signalr.min.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #1a4d2e 0%, #2d5f3f 100%);
+                min-height: 100vh;
+                overflow: hidden;
+            }
+
+            /* Game Table */
+            .game-container {
+                width: 100vw;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+            }
+
+            /* Header */
+            .game-header {
+                background: rgba(0, 0, 0, 0.6);
+                padding: 15px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: white;
+            }
+
+            .room-info h2 {
+                font-size: 24px;
+                margin-bottom: 5px;
+            }
+
+            .room-info p {
+                font-size: 14px;
+                opacity: 0.8;
+            }
+
+            .game-controls {
+                display: flex;
+                gap: 15px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .btn-danger {
+                background: #ef4444;
+                color: white;
+            }
+
+                .btn-danger:hover {
+                    background: #dc2626;
+                    transform: translateY(-2px);
+                }
+
+            .btn-success {
+                background: #10b981;
+                color: white;
+            }
+
+                .btn-success:hover {
+                    background: #059669;
+                    transform: translateY(-2px);
+                }
+
+            /* Main Game Area */
+            .game-board {
+                flex: 1;
+                display: flex;
+                position: relative;
+                padding: 20px;
+            }
+
+            /* Players Area */
+            .players-area {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 700px;
+                height: 450px;
+            }
+
+            .player-position {
+                position: absolute;
+                background: rgba(255, 255, 255, 0.1);
+                border: 3px solid rgba(255, 255, 255, 0.2);
+                border-radius: 15px;
+                padding: 15px;
+                min-width: 200px;
+                backdrop-filter: blur(10px);
+            }
+
+                .player-position.active {
+                    border-color: #fbbf24;
+                    box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+                    animation: pulse 2s infinite;
+                }
+
+            @keyframes pulse {
+                0%, 100% {
+                    box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+                }
+
+                50% {
+                    box-shadow: 0 0 30px rgba(251, 191, 36, 0.8);
+                }
+            }
+
+            /* Player Positions */
+            .player-bottom {
+                bottom: -100px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+
+            .player-top {
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .player-left {
+                left: -80px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .player-right {
+                right: -80px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .player-info {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: white;
+            }
+
+            .player-avatar {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+                font-size: 18px;
+            }
+
+            .player-details h4 {
+                font-size: 16px;
+                margin-bottom: 3px;
+            }
+
+            .player-details p {
+                font-size: 12px;
+                opacity: 0.7;
+            }
+
+            /* Center Area */
+            .center-area {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                gap: 30px;
+                align-items: center;
+            }
+
+            .stock-pile, .discard-pile, .indicator-box {
+                background: rgba(0, 0, 0, 0.4);
+                border-radius: 12px;
+                padding: 20px;
+                text-align: center;
+                min-width: 100px;
+            }
+
+                .stock-pile h4, .discard-pile h4, .indicator-box h4 {
+                    color: white;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                }
+
+            .tile-stack {
+                width: 60px;
+                height: 85px;
+                background: #8b4513;
+                border: 2px solid #654321;
+                border-radius: 8px;
+                margin: 0 auto;
+                position: relative;
+                cursor: pointer;
+                transition: transform 0.2s;
+            }
+
+                .tile-stack:hover {
+                    transform: scale(1.05);
+                }
+
+                .tile-stack.clickable:hover {
+                    border-color: #fbbf24;
+                }
+
+            .stock-count {
+                color: white;
+                font-size: 12px;
+                margin-top: 8px;
+            }
+
+            /* Indicator Tile */
+            .indicator-tile {
+                width: 60px;
+                height: 85px;
+                background: white;
+                border: 3px solid #fbbf24;
+                border-radius: 8px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 15px rgba(251, 191, 36, 0.5);
+            }
+
+                .indicator-tile .tile-number {
+                    font-size: 32px;
+                    font-weight: bold;
+                }
+
+                .indicator-tile .tile-color-dot {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    margin-top: 5px;
+                }
+
+            /* My Hand Area */
+            .my-hand {
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(0, 0, 0, 0.5);
+                border-radius: 15px;
+                padding: 20px;
+                max-width: 90%;
+                backdrop-filter: blur(10px);
+            }
+
+            .hand-title {
+                color: white;
+                text-align: center;
+                margin-bottom: 15px;
+                font-size: 18px;
+            }
+
+            .hand-tiles {
+                display: flex;
+                gap: 8px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .tile {
+                width: 55px;
+                height: 80px;
+                background: white;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.2s;
+                position: relative;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+
+                .tile:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                }
+
+                .tile.selected {
+                    transform: translateY(-15px);
+                    border-color: #10b981;
+                    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.5);
+                }
+
+                .tile.joker {
+                    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                    border-color: #d97706;
+                }
+
+            .tile-number {
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .tile-color-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                margin-top: 5px;
+            }
+
+            /* Colors */
+            .color-red {
+                background: #ef4444;
+            }
+
+            .color-black {
+                background: #1f2937;
+            }
+
+            .color-blue {
+                background: #3b82f6;
+            }
+
+            .color-yellow {
+                background: #fbbf24;
+            }
+
+            .text-red {
+                color: #ef4444;
+            }
+
+            .text-black {
+                color: #1f2937;
+            }
+
+            .text-blue {
+                color: #3b82f6;
+            }
+
+            .text-yellow {
+                color: #d97706;
+            }
+
+            /* Discard Tile */
+            .discard-tile {
+                width: 60px;
+                height: 85px;
+                background: white;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                margin: 0 auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: transform 0.2s;
+            }
+
+                .discard-tile:hover {
+                    transform: scale(1.05);
+                    border-color: #10b981;
+                }
+
+                .discard-tile .tile-number {
+                    font-size: 32px;
+                    font-weight: bold;
+                }
+
+            /* Notification */
+            .notification {
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+                z-index: 1000;
+                display: none;
+                min-width: 300px;
+                animation: slideIn 0.3s;
+            }
+
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            .notification.show {
+                display: block;
+            }
+
+            .notification.success {
+                border-left: 4px solid #10b981;
+            }
+
+            .notification.error {
+                border-left: 4px solid #ef4444;
+            }
+
+            .notification.info {
+                border-left: 4px solid #3b82f6;
+            }
+
+            /* Turn Indicator */
+            .turn-message {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 30px 50px;
+                border-radius: 15px;
+                font-size: 24px;
+                font-weight: bold;
+                z-index: 100;
+                display: none;
+                text-align: center;
+            }
+
+                .turn-message.show {
+                    display: block;
+                    animation: fadeIn 0.5s;
+                }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translate(-50%, -50%) scale(1);
+                }
+            }
+
+            /* Action Buttons */
+            .action-buttons {
+                position: absolute;
+                bottom: 200px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 15px;
+            }
+
+            .btn-action {
+                padding: 12px 24px;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: none;
+            }
+
+                .btn-action.show {
+                    display: block;
+                }
+
+            .btn-discard {
+                background: #ef4444;
+                color: white;
+            }
+
+                .btn-discard:hover {
+                    background: #dc2626;
+                    transform: translateY(-2px);
+                }
+
+                .btn-discard:disabled {
+                    background: #9ca3af;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+
+            /* Game Over Modal */
+            .game-over-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: none;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+            }
+
+                .game-over-modal.show {
+                    display: flex;
+                }
+
+            .game-over-content {
+                background: white;
+                border-radius: 20px;
+                padding: 40px;
+                text-align: center;
+                max-width: 500px;
+                animation: scaleIn 0.5s;
+            }
+
+            @keyframes scaleIn {
+                from {
+                    transform: scale(0.5);
+                    opacity: 0;
+                }
+
+                to {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            .game-over-content h2 {
+                font-size: 36px;
+                margin-bottom: 20px;
+                color: #10b981;
+            }
+
+            .game-over-content p {
+                font-size: 18px;
+                margin-bottom: 30px;
+                color: #666;
+            }
+
+            .winner-name {
+                font-size: 28px;
+                font-weight: bold;
+                color: #667eea;
+                margin: 20px 0;
+            }
+
+            .reward-amount {
+                font-size: 32px;
+                font-weight: bold;
+                color: #f59e0b;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Notification -->
+        <div id="notification" class="notification">
+            <div id="notificationMessage"></div>
+        </div>
+
+        <!-- Turn Message -->
+        <div id="turnMessage" class="turn-message"></div>
+
+        <!-- Game Container -->
+        <div class="game-container">
+            <!-- Header -->
+            <div class="game-header">
+                <div class="room-info">
+                    <h2 id="roomName">Okey Otağı</h2>
+                    <p id="gameInfo">Oyun yüklənir...</p>
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-success" id="declareWinBtn" onclick="declareWin()">
+                        🏆 Okey Bildirmək
+                    </button>
+                    <button class="btn btn-danger" onclick="leaveGame()">
+                        ❌ Çıxış
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Board -->
+            <div class="game-board">
+                <!-- Players Area -->
+                <div class="players-area">
+                    <!-- Player Positions -->
+                    <div id="player0" class="player-position player-bottom"></div>
+                    <div id="player1" class="player-position player-left"></div>
+                    <div id="player2" class="player-position player-top"></div>
+                    <div id="player3" class="player-position player-right"></div>
+                </div>
+
+                <!-- Center Area -->
+                <div class="center-area">
+                    <!-- Stock Pile -->
+                    <div class="stock-pile">
+                        <h4>Yığın</h4>
+                        <div class="tile-stack clickable" id="stockPile" onclick="drawFromStock()"></div>
+                        <p class="stock-count" id="stockCount">0 daş</p>
+                    </div>
+
+                    <!-- Indicator -->
+                    <div class="indicator-box">
+                        <h4>Göstərici</h4>
+                        <div id="indicatorTile" class="indicator-tile">
+                            <div class="tile-number">?</div>
+                        </div>
+                    </div>
+
+                    <!-- Discard Pile -->
+                    <div class="discard-pile">
+                        <h4>Atılmış</h4>
+                        <div id="discardPile" class="tile-stack" onclick="drawFromDiscard()">
+                            <div style="color: white; padding: 10px; font-size: 12px;">Boş</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button id="discardBtn" class="btn-action btn-discard" onclick="discardSelectedTile()" disabled>
+                        Daşı At
+                    </button>
+                </div>
+
+                <!-- My Hand -->
+                <div class="my-hand">
+                    <h3 class="hand-title">Mənim Daşlarım (<span id="handCount">0</span>)</h3>
+                    <div id="myHand" class="hand-tiles">
+                        <!-- Tiles will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Modal -->
+        <div id="gameOverModal" class="game-over-modal">
+            <div class="game-over-content">
+                <h2>🏆 Oyun Bitdi!</h2>
+                <div id="gameOverDetails"></div>
+                <button class="btn btn-success" style="margin-top: 20px;" onclick="returnToLobby()">
+                    Lobbiyə Qayıt
+                </button>
+            </div>
+        </div>
+
+        <script>
+            let connection = null;
+            let selectedTile = null;
+            let myConnectionId = null;
+            let gameState = null;
+
+            // SignalR Connection
+            async function initSignalR() {
+                connection = new signalR.HubConnectionBuilder()
+                    .withUrl("/okeyhub")
+                    .withAutomaticReconnect()
+                    .build();
+
+                // Events
+                connection.on("GameState", (state) => {
+                    gameState = state;
+                    renderGameState(state);
+                });
+
+                connection.on("TileDrawn", (data) => {
+                    showNotification(`${data.playerName} yığından daş çəkdi`, 'info');
+                });
+
+                connection.on("TileDrawnFromDiscard", (data) => {
+                    showNotification(`${data.playerName} atılmış daşı götürdü`, 'info');
+                });
+
+                connection.on("TileDiscarded", (data) => {
+                    showNotification(`${data.playerName} daş atdı`, 'info');
+                });
+
+                connection.on("GameFinished", (data) => {
+                    showGameOver(data);
+                });
+
+                connection.on("GameReset", (data) => {
+                    showNotification(data.message, 'info');
+                    setTimeout(() => returnToLobby(), 3000);
+                });
+
+                connection.on("MoveError", (message) => {
+                    showNotification(message, 'error');
+                });
+
+                connection.on("WinError", (message) => {
+                    showNotification(message, 'error');
+                });
+
+                connection.on("PlayerLeft", (playerName) => {
+                    showNotification(`${playerName} oyundan çıxdı`, 'error');
+                });
+
+                connection.on("GameCancelled", (data) => {
+                    showNotification(data.message, 'error');
+                    setTimeout(() => returnToLobby(), 3000);
+                });
+
+                try {
+                    await connection.start();
+                    console.log("✅ SignalR connected to game");
+                    myConnectionId = connection.connectionId;
+                } catch (err) {
+                    console.error("❌ SignalR connection error:", err);
+                    showNotification('Bağlantı xətası! Yenidən cəhd edin.', 'error');
+                }
+            }
+
+            // Render Game State
+            function renderGameState(state) {
+                if (!state) return;
+
+                // Update room info
+                document.getElementById('roomName').textContent = state.roomName;
+                document.getElementById('gameInfo').textContent = `Yığın: ${state.stockCount} daş`;
+
+                // Update players
+                renderPlayers(state.players);
+
+                // Update indicator
+                renderIndicator(state.indicator);
+
+                // Update discard pile
+                renderDiscardPile(state.lastDiscarded);
+
+                // Update stock count
+                document.getElementById('stockCount').textContent = `${state.stockCount} daş`;
+
+                // Update my hand
+                renderMyHand(state.myHand);
+
+                // Update turn
+                updateTurn(state.isMyTurn, state.currentPlayerName);
+            }
+
+            // Render Players
+            function renderPlayers(players) {
+                players.forEach((player, index) => {
+                    const playerDiv = document.getElementById(`player${index}`);
+                    if (!playerDiv) return;
+
+                    const isActive = player.isCurrentTurn;
+                    playerDiv.className = `player-position ${getPositionClass(index)} ${isActive ? 'active' : ''}`;
+
+                    playerDiv.innerHTML = `
+                            <div class="player-info">
+                                <div class="player-avatar">${player.name.charAt(0).toUpperCase()}</div>
+                                <div class="player-details">
+                                    <h4>${player.name}</h4>
+                                    <p>Daş: ${player.tileCount} | Xal: ${player.score}</p>
+                                </div>
+                            </div>
+                        `;
+                });
+            }
+
+            function getPositionClass(index) {
+                const positions = ['player-bottom', 'player-left', 'player-top', 'player-right'];
+                return positions[index];
+            }
+
+            // Render Indicator
+            function renderIndicator(indicator) {
+                if (!indicator) return;
+
+                const indicatorDiv = document.getElementById('indicatorTile');
+                const colorClass = getColorClass(indicator.color);
+
+                indicatorDiv.innerHTML = `
+                        <div class="tile-number ${colorClass}">${indicator.number}</div>
+                        <div class="tile-color-dot color-${indicator.color.toLowerCase()}"></div>
+                    `;
+            }
+
+            // Render Discard Pile
+            function renderDiscardPile(tile) {
+                const discardDiv = document.getElementById('discardPile');
+
+                if (!tile) {
+                    discardDiv.innerHTML = '<div style="color: white; padding: 10px; font-size: 12px;">Boş</div>';
+                    return;
+                }
+
+                const colorClass = getColorClass(tile.color);
+                discardDiv.innerHTML = `
+                        <div class="discard-tile">
+                            <div class="tile-number ${colorClass}">${tile.number}</div>
+                            <div class="tile-color-dot color-${tile.color.toLowerCase()}"></div>
+                        </div>
+                    `;
+            }
+
+            // Render My Hand
+            function renderMyHand(hand) {
+                if (!hand || hand.length === 0) return;
+
+                const handDiv = document.getElementById('myHand');
+                document.getElementById('handCount').textContent = hand.length;
+
+                handDiv.innerHTML = hand.map(tile => {
+                    const colorClass = getColorClass(tile.color);
+                    const isJoker = tile.isFakeJoker;
+
+                    return `
+                            <div class="tile ${isJoker ? 'joker' : ''}"
+                                 data-tile-id="${tile.id}"
+                                 onclick="selectTile('${tile.id}')">
+                                <div class="tile-number ${colorClass}">${tile.number}</div>
+                                <div class="tile-color-dot color-${tile.color.toLowerCase()}"></div>
+                            </div>
+                        `;
+                }).join('');
+            }
+
+            // Select Tile
+            function selectTile(tileId) {
+                if (!gameState || !gameState.isMyTurn) {
+                    showNotification('Sizin növbəniz deyil!', 'error');
+                    return;
+                }
+
+                // Deselect previous
+                const tiles = document.querySelectorAll('.tile');
+                tiles.forEach(t => t.classList.remove('selected'));
+
+                // Select new
+                const tile = document.querySelector(`[data-tile-id="${tileId}"]`);
+                if (tile) {
+                    tile.classList.add('selected');
+                    selectedTile = tileId;
+
+                    // Show discard button
+                    const discardBtn = document.getElementById('discardBtn');
+                    discardBtn.classList.add('show');
+                    discardBtn.disabled = false;
+                }
+            }
+
+            // Update Turn
+            function updateTurn(isMyTurn, currentPlayerName) {
+                const turnMsg = document.getElementById('turnMessage');
+                const declareBtn = document.getElementById('declareWinBtn');
+
+                if (isMyTurn) {
+                    turnMsg.innerHTML = '✨ Sizin növbənizdir!';
+                    turnMsg.classList.add('show');
+                    declareBtn.style.display = 'block';
+
+                    setTimeout(() => {
+                        turnMsg.classList.remove('show');
+                    }, 3000);
+                } else {
+                    turnMsg.innerHTML = `⏳ ${currentPlayerName} oynayır...`;
+                    declareBtn.style.display = 'none';
+
+                    const discardBtn = document.getElementById('discardBtn');
+                    discardBtn.classList.remove('show');
+                    discardBtn.disabled = true;
+                }
+            }
+
+            // Get Color Class
+            function getColorClass(color) {
+                const colorMap = {
+                    'Red': 'text-red',
+                    'Black': 'text-black',
+                    'Blue': 'text-blue',
+                    'Yellow': 'text-yellow'
+                };
+                return colorMap[color] || '';
+            }
+
+            // Actions
+            async function drawFromStock() {
+                if (!gameState || !gameState.isMyTurn) {
+                    showNotification('Sizin növbəniz deyil!', 'error');
+                    return;
+                }
+
+                try {
+                    await connection.invoke("DrawFromStock");
+                } catch (err) {
+                    console.error("❌ DrawFromStock error:", err);
+                    showNotification('Daş çəkmək alınmadı', 'error');
+                }
+            }
+
+            async function drawFromDiscard() {
+                if (!gameState || !gameState.isMyTurn) {
+                    showNotification('Sizin növbəniz deyil!', 'error');
+                    return;
+                }
+
+                if (!gameState.canDrawFromDiscard) {
+                    showNotification('Atılmış daş yoxdur', 'error');
+                    return;
+                }
+
+                try {
+                    await connection.invoke("DrawFromDiscard");
+                } catch (err) {
+                    console.error("❌ DrawFromDiscard error:", err);
+                    showNotification('Daş götürmək alınmadı', 'error');
+                }
+            }
+
+            async function discardSelectedTile() {
+                if (!selectedTile) {
+                    showNotification('Atmaq üçün daş seçin', 'error');
+                    return;
+                }
+
+                try {
+                    await connection.invoke("DiscardTile", selectedTile);
+                    selectedTile = null;
+
+                    const discardBtn = document.getElementById('discardBtn');
+                    discardBtn.classList.remove('show');
+                    discardBtn.disabled = true;
+                } catch (err) {
+                    console.error("❌ DiscardTile error:", err);
+                    showNotification('Daş atmaq alınmadı', 'error');
+                }
+            }
+
+            async function declareWin() {
+                if (!gameState || !gameState.isMyTurn) {
+                    showNotification('Sizin növbəniz deyil!', 'error');
+                    return;
+                }
+
+                if (confirm('Okey bildirmək istəyirsiniz?')) {
+                    try {
+                        await connection.invoke("DeclareWin");
+                    } catch (err) {
+                        console.error("❌ DeclareWin error:", err);
+                        showNotification('Okey bildirmək alınmadı', 'error');
+                    }
+                }
+            }
+
+            function leaveGame() {
+                if (confirm('Oyundan çıxmaq istəyirsiniz?')) {
+                    returnToLobby();
+                }
+            }
+
+            function returnToLobby() {
+                window.location.href = '/Frontend/okeyrooms.html';
+            }
+
+            // Game Over
+            
+                /***********************
+                 * Utilities
+                 ***********************/
+                window.drawFromStock = drawFromStock;
+                window.drawFromDiscard = drawFromDiscard;
+                window.discardSelectedTile = discardSelectedTile;
+                window.declareWin = declareWin;
+                window.leaveGame = leaveGame;
+                window.closeWinModal = closeWinModal;
+        </script>
+    </body>
+</html>

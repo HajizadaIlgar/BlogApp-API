@@ -1,0 +1,843 @@
+﻿<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Domino Game - Classic 101</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .room-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .round-badge {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .balance {
+            font-size: 14px;
+            color: #94a3b8;
+            padding: 6px 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 6px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr 220px;
+            gap: 16px;
+            padding: 16px;
+            max-width: 1600px;
+            margin: 0 auto;
+            min-height: calc(100vh - 60px);
+        }
+
+        .sidebar {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px;
+            height: fit-content;
+        }
+
+        .sidebar-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .player-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+            .player-card.active {
+                border-color: #10b981;
+                background: rgba(16, 185, 129, 0.15);
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            }
+
+            .player-card.leader {
+                border-color: #fbbf24;
+                background: rgba(251, 191, 36, 0.1);
+            }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .player-score {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .player-info {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .status-bar {
+            background: rgba(30, 41, 59, 0.8);
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+            .status-bar.your-turn {
+                background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+                color: #10b981;
+                animation: pulse 2s infinite;
+            }
+
+            .status-bar.round-end {
+                background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(245, 158, 11, 0.2));
+                color: #fbbf24;
+                font-size: 15px;
+            }
+
+            .status-bar.game-over {
+                background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3));
+                color: #fbbf24;
+                font-size: 16px;
+            }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .table {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            padding: 32px;
+            min-height: 380px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .chain {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            padding: 20px;
+            flex-wrap: nowrap;
+        }
+
+        .empty-table {
+            text-align: center;
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .tile {
+            width: 50px;
+            height: 100px;
+            background: linear-gradient(145deg, #ffffff, #f1f5f9);
+            border: 3px solid #cbd5e1;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            flex-shrink: 0;
+        }
+
+            .tile:hover {
+                transform: translateY(-8px) scale(1.05);
+                box-shadow: 0 12px 24px rgba(16, 185, 129, 0.4);
+            }
+
+            .tile.horizontal {
+                width: 100px;
+                height: 50px;
+                flex-direction: row;
+            }
+
+        .tile-half {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8px;
+        }
+
+        .tile:not(.horizontal) .tile-half:first-child {
+            border-bottom: 3px solid #cbd5e1;
+        }
+
+        .tile.horizontal .tile-half:first-child {
+            border-right: 3px solid #cbd5e1;
+        }
+
+        .dots {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #1e293b 60%, #0f172a 100%);
+            border-radius: 50%;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .dots-0 {
+            display: none;
+        }
+
+        .dots-1 {
+            display: grid;
+            place-items: center;
+        }
+
+        .dots-2 {
+            display: grid;
+            grid-template: 1fr 1fr / 1fr;
+            place-items: center;
+            gap: 12px;
+        }
+
+        .dots-3 {
+            display: grid;
+            grid-template: 1fr 1fr 1fr / 1fr;
+            place-items: center;
+            gap: 8px;
+        }
+
+        .dots-4 {
+            display: grid;
+            grid-template: 1fr 1fr / 1fr 1fr;
+            gap: 8px;
+        }
+
+        .dots-5 {
+            display: grid;
+            grid-template: 1fr 1fr 1fr / 1fr 1fr;
+            gap: 6px;
+        }
+
+            .dots-5 .dot:nth-child(3) {
+                grid-column: 1 / -1;
+                justify-self: center;
+            }
+
+        .dots-6 {
+            display: grid;
+            grid-template: 1fr 1fr 1fr / 1fr 1fr;
+            gap: 6px;
+        }
+
+        .my-hand {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .hand-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .hand-tiles {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tile.playable {
+            border-color: #10b981;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .tile.not-playable {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+            .tile.not-playable:hover {
+                transform: none;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(30, 41, 59, 0.8);
+            color: #94a3b8;
+        }
+
+            .action-btn:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+
+            .action-btn.draw {
+                background: linear-gradient(135deg, #3b82f6, #2563eb);
+                color: white;
+            }
+
+            .action-btn:not(:disabled):hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 12px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .info-label {
+            color: #94a3b8;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4);
+            animation: slideDown 0.3s ease;
+        }
+
+            .toast.success {
+                background: linear-gradient(135deg, #10b981, #059669);
+                box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+            }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: 3;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="room-title">🎯 <span id="roomName">Domino</span></div>
+            <div class="round-badge">Raund: <span id="roundNumber">1</span></div>
+            <div class="balance">💰 <span id="balance">0</span> coin</div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button id="startBtn" class="btn btn-primary" disabled>Başlat</button>
+            <button id="leaveBtn" class="btn btn-danger">Çıx</button>
+        </div>
+    </div>
+
+    <div class="game-layout">
+        <div class="sidebar">
+            <div class="sidebar-title">👥 Oyunçular (101-ə qədər)</div>
+            <div id="playersList"></div>
+        </div>
+
+        <div class="game-area">
+            <div id="statusBar" class="status-bar">Oyunçular gözlənilir...</div>
+
+            <div class="table">
+                <div id="chain" class="chain">
+                    <div class="empty-table">🎯 İlk daşı qoyun</div>
+                </div>
+            </div>
+
+            <div class="my-hand">
+                <div class="hand-title">✋ Sizin Daşlar</div>
+                <div id="myHand" class="hand-tiles">
+                    <div style="color: #64748b; text-align: center; width: 100%;">
+                        Oyun başlayanda daşlar görünəcək
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="drawBtn" class="action-btn draw" disabled>🎲 Bazardan Götür</button>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-title">📊 Məlumat</div>
+            <ul class="info-list">
+                <li class="info-item">
+                    <span class="info-label">Masa:</span>
+                    <span class="info-value" id="chainCount">0</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">Bazar:</span>
+                    <span class="info-value" id="stockCount">0</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">Sol:</span>
+                    <span class="info-value" id="leftEnd">-</span>
+                </li>
+                <li class="info-item">
+                    <span class="info-label">Sağ:</span>
+                    <span class="info-value" id="rightEnd">-</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomIdFromUrl = urlParams.get('roomId');
+        const passwordFromUrl = urlParams.get('password');
+
+        let connection = null;
+        let myHand = [];
+        let chainTiles = [];
+        let isMyTurn = false;
+        let leftEnd = null;
+        let rightEnd = null;
+        let stockCount = 0;
+        let currentRound = 1;
+
+        function getToken() {
+            const raw = document.cookie.split("; ").find(row => row.startsWith("AuthToken="))?.split("=")[1];
+            if (!raw) return "";
+            let token = decodeURIComponent(raw).trim();
+            if (token.endsWith(".")) token = token.slice(0, -1);
+            return token;
+        }
+
+        function showToast(msg, success = false) {
+            const toast = document.createElement('div');
+            toast.className = success ? 'toast success' : 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3500);
+        }
+
+        function createConnection() {
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("/dominoHub", { accessTokenFactory: () => getToken() })
+                .withAutomaticReconnect()
+                .build();
+
+            connection.on("UserData", (data) => {
+                document.getElementById('balance').textContent = data.balance;
+            });
+
+            connection.on("JoinedRoom", (data) => {
+                document.getElementById('roomName').textContent = data.roomName;
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('statusBar').textContent = "✅ Room-a qoşuldunuz";
+            });
+
+            connection.on("PlayersList", (players) => {
+                const list = document.getElementById('playersList');
+                const maxScore = Math.max(...players.map(p => p.score), 0);
+
+                list.innerHTML = players.map(p => {
+                    const isLeader = p.score === maxScore && p.score > 0;
+                    return `
+                            <div class="player-card ${p.isCurrentTurn ? 'active' : ''} ${isLeader ? 'leader' : ''}">
+                                <div class="player-name">
+                                    <span>${isLeader ? '👑 ' : ''}${p.name}</span>
+                                    <span class="player-score">${p.score}</span>
+                                </div>
+                                <div class="player-info">🎯 ${p.tileCount} daş</div>
+                            </div>
+                        `;
+                }).join('');
+            });
+
+            connection.on("GameStarted", (data) => {
+                currentRound = data.round || 1;
+                document.getElementById('roundNumber').textContent = currentRound;
+                document.getElementById('statusBar').textContent = `🎮 ${data.message}`;
+                document.getElementById('startBtn').disabled = true;
+            });
+
+            connection.on("GameState", (state) => {
+                myHand = state.myHand;
+                chainTiles = state.chainTiles;
+                isMyTurn = state.isMyTurn;
+                leftEnd = state.leftEnd;
+                rightEnd = state.rightEnd;
+                stockCount = state.stockCount;
+                currentRound = state.currentRound || 1;
+
+                document.getElementById('roundNumber').textContent = currentRound;
+
+                renderHand();
+                renderChain();
+                updateInfo();
+
+                const statusBar = document.getElementById('statusBar');
+                if (isMyTurn) {
+                    statusBar.textContent = "🎯 Sizin növbənizdir!";
+                    statusBar.className = "status-bar your-turn";
+                } else {
+                    statusBar.textContent = `⏳ ${state.currentPlayerName} oynayır...`;
+                    statusBar.className = "status-bar";
+                }
+
+                document.getElementById('drawBtn').disabled = !isMyTurn;
+            });
+
+            connection.on("TilePlaced", () => {
+                setTimeout(renderChain, 100);
+            });
+
+            connection.on("TileDrawn", (data) => {
+                if (data.passed) {
+                    showToast(`⏭️ ${data.playerName} pas keçdi`);
+                }
+            });
+
+            // ✅ RAUND SONU
+            connection.on("RoundFinished", (data) => {
+                const statusBar = document.getElementById('statusBar');
+                statusBar.className = "status-bar round-end";
+                statusBar.textContent = `🏆 ${data.winnerName} raund ${data.round}-u qazandı! (+${data.pointsEarned} xal) | Cəmi: ${data.currentScore}/101`;
+
+                confetti({ particleCount: 100, spread: 60, origin: { y: 0.6 } });
+
+                // Rəqib əllərini göstər
+                let msg = `🏆 Raund ${data.round} bitdi!\n\n${data.winnerName}: +${data.pointsEarned} xal\nCəmi xal: ${data.currentScore}/101\n\n`;
+                if (data.playerScores && data.playerScores.length > 0) {
+                    msg += "Rəqiblərin əlləri:\n";
+                    data.playerScores.forEach(ps => {
+                        msg += `${ps.name}: ${ps.handValue} xal (${ps.tiles.join(' ')})\n`;
+                    });
+                }
+
+                setTimeout(() => alert(msg), 1000);
+            });
+
+            // ✅ YENİ RAUND
+            connection.on("NewRoundStarted", (data) => {
+                currentRound = data.round;
+                document.getElementById('roundNumber').textContent = currentRound;
+                showToast(`🎮 Raund ${data.round} başladı!`, true);
+            });
+
+            // ✅ OYUN BİTDİ (101+)
+            connection.on("GameFinished", (data) => {
+                const statusBar = document.getElementById('statusBar');
+                statusBar.textContent = data.message;
+                statusBar.className = "status-bar game-over";
+
+                confetti({ particleCount: 300, spread: 100, origin: { y: 0.6 } });
+                setTimeout(() => confetti({ particleCount: 200, spread: 80 }), 300);
+                setTimeout(() => confetti({ particleCount: 150, spread: 60 }), 600);
+
+                let finalMsg = `${data.message}\n\nFinal nəticələr:\n`;
+                data.allScores.forEach(s => {
+                    finalMsg += `${s.name}: ${s.score} xal\n`;
+                });
+
+                setTimeout(() => alert(finalMsg), 1200);
+            });
+
+            connection.on("GameReset", () => {
+                showToast("Yeni oyun üçün hazırlaşın...", true);
+            });
+
+            connection.on("MoveError", (msg) => showToast(msg));
+            connection.on("JoinError", (msg) => {
+                showToast(msg);
+                setTimeout(() => window.location.href = "/FrontEnd/domino-room.html", 2000);
+            });
+
+            return connection;
+        }
+
+        function renderDots(value) {
+            if (value === 0) return '<div class="dots dots-0"></div>';
+            const dots = '<div class="dot"></div>'.repeat(value);
+            return `<div class="dots dots-${value}">${dots}</div>`;
+        }
+
+        function createTile(tile, isHorizontal = false) {
+            const div = document.createElement('div');
+            div.className = `tile ${isHorizontal ? 'horizontal' : ''}`;
+            div.innerHTML = `
+                    <div class="tile-half">${renderDots(tile.left)}</div>
+                    <div class="tile-half">${renderDots(tile.right)}</div>
+                `;
+            return div;
+        }
+
+        function canPlaceTile(tile) {
+            if (chainTiles.length === 0) return true;
+            return tile.left === leftEnd || tile.right === leftEnd ||
+                tile.left === rightEnd || tile.right === rightEnd;
+        }
+
+        function renderHand() {
+            const container = document.getElementById('myHand');
+            container.innerHTML = '';
+
+            if (myHand.length === 0) {
+                container.innerHTML = '<div style="color: #64748b;">Daşlarınız yoxdur</div>';
+                return;
+            }
+
+            myHand.forEach(tile => {
+                const tileEl = createTile(tile, false);
+                const playable = canPlaceTile(tile);
+
+                if (isMyTurn) {
+                    if (playable) {
+                        tileEl.classList.add('playable');
+                        tileEl.addEventListener('click', () => placeTile(tile));
+                    } else {
+                        tileEl.classList.add('not-playable');
+                    }
+                }
+
+                container.appendChild(tileEl);
+            });
+        }
+
+        function renderChain() {
+            const container = document.getElementById('chain');
+            container.innerHTML = '';
+
+            if (chainTiles.length === 0) {
+                container.innerHTML = '<div class="empty-table">🎯 İlk daşı qoyun</div>';
+                return;
+            }
+
+            chainTiles.forEach((tile, i) => {
+                const tileEl = createTile(tile, true);
+                tileEl.style.animation = `slideDown 0.3s ease ${i * 0.05}s both`;
+                container.appendChild(tileEl);
+            });
+        }
+
+        function updateInfo() {
+            document.getElementById('chainCount').textContent = chainTiles.length;
+            document.getElementById('stockCount').textContent = stockCount;
+            document.getElementById('leftEnd').textContent = leftEnd !== null ? leftEnd : '-';
+            document.getElementById('rightEnd').textContent = rightEnd !== null ? rightEnd : '-';
+        }
+
+        async function placeTile(tile) {
+            if (!isMyTurn || !canPlaceTile(tile)) return;
+
+            try {
+                let side = 'right';
+
+                if (chainTiles.length > 0) {
+                    const canLeft = tile.left === leftEnd || tile.right === leftEnd;
+                    const canRight = tile.left === rightEnd || tile.right === rightEnd;
+
+                    if (canLeft && !canRight) {
+                        side = 'left';
+                    } else if (!canLeft && canRight) {
+                        side = 'right';
+                    } else if (canLeft && canRight) {
+                        const userChoice = confirm(`Bu daşı SOLA qoymaq istəyirsiniz?\n\n✅ Bəli = Sola qoy\n❌ Xeyr = Sağa qoy`);
+                        side = userChoice ? 'left' : 'right';
+                    }
+                }
+
+                await connection.invoke("PlaceTile", tile.id, side);
+            } catch (err) {
+                showToast("Daş qoymaq alınmadı");
+            }
+        }
+
+        document.getElementById('startBtn').addEventListener('click', async () => {
+            try {
+                await connection.invoke("StartGame");
+            } catch (err) {
+                showToast("Oyunu başlatmaq alınmadı");
+            }
+        });
+
+        document.getElementById('drawBtn').addEventListener('click', async () => {
+            try {
+                await connection.invoke("TakeFromStock");
+            } catch (err) {
+                showToast("Bazardan götürmək alınmadı");
+            }
+        });
+
+        document.getElementById('leaveBtn').addEventListener('click', async () => {
+            if (connection) {
+                await connection.invoke("LeaveRoom").catch(() => { });
+            }
+            window.location.href = "/FrontEnd/domino-room.html";
+        });
+
+        async function init() {
+            if (!roomIdFromUrl) {
+                showToast("Room ID tapılmadı");
+                setTimeout(() => window.location.href = "/FrontEnd/domino-room.html", 2000);
+                return;
+            }
+
+            try {
+                connection = createConnection();
+                await connection.start();
+                await connection.invoke("JoinRoom", roomIdFromUrl, passwordFromUrl || null);
+            } catch (err) {
+                showToast("Serverə qoşulmaq alınmadı");
+                setTimeout(() => window.location.href = "/FrontEnd/domino-room.html", 2000);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

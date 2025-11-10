@@ -8,7 +8,7 @@ namespace BlogApp.BusinnesLayer;
 
 public static class ServiceRegistirasion
 {
-    public static IServiceCollection AddRepositories(IServiceCollection services)
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<ICategoryService, CategoryService>();
         return services;

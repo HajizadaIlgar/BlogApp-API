@@ -16,10 +16,11 @@ public class JwtTokenHandler : IJwtTokenHandler
     {
         opt = _opt.Value;
     }
-    public string CreateToken(User user, int hours = 36)
+    public string CreateToken(User user, int hours = 1440)
     {
         List<Claim> claims = [
-           new Claim(ClaimTypes.Name,user.Username),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name,user.UserName),
             new Claim(ClaimTypes.Email,user.Email),
             new Claim(ClaimTypes.Role,user.Role.ToString()),
             new Claim(ClaimTypes.GivenName,user.Name+""+user.Surname),

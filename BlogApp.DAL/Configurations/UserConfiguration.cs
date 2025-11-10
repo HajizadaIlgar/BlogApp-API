@@ -12,7 +12,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasKey(x => x.Id);
 
         builder
-            .HasIndex(x => x.Username)
+            .HasIndex(x => x.UserName)
             .IsUnique();
 
         builder
@@ -20,7 +20,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsUnique();
 
         builder
-            .Property(x => x.Username)
+            .Property(x => x.UserName)
             .IsRequired()
             .HasMaxLength(32);
 

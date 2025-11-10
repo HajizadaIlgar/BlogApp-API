@@ -33,7 +33,7 @@ namespace BlogApp.DAL.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 1, 2, 23, 19, 20, 983, DateTimeKind.Local).AddTicks(7582));
+                        .HasDefaultValue(new DateTime(2025, 11, 7, 3, 44, 40, 280, DateTimeKind.Local).AddTicks(7907));
 
                     b.Property<string>("Icon")
                         .IsRequired()
@@ -59,6 +59,67 @@ namespace BlogApp.DAL.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("BlogApp.Core.Entities.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsRead")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Receiver")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Receiver")
+                        .HasDatabaseName("IX_ChatMessages_Receiver");
+
+                    b.HasIndex("Sender")
+                        .HasDatabaseName("IX_ChatMessages_Sender");
+
+                    b.HasIndex("Timestamp")
+                        .HasDatabaseName("IX_ChatMessages_Timestamp");
+
+                    b.HasIndex("Sender", "Receiver")
+                        .HasDatabaseName("IX_ChatMessages_Sender_Receiver");
+
+                    b.ToTable("ChatMessages");
+                });
+
             modelBuilder.Entity("BlogApp.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -66,6 +127,12 @@ namespace BlogApp.DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("BanDeadline")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -94,6 +161,9 @@ namespace BlogApp.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
@@ -101,10 +171,13 @@ namespace BlogApp.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("TokenExpiry")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)");
@@ -114,7 +187,7 @@ namespace BlogApp.DAL.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("Username")
+                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Users");

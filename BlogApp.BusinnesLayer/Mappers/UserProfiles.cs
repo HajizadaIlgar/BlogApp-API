@@ -11,5 +11,6 @@ public class UserProfiles : Profile
     {
         CreateMap<RegisterCreateDto, User>()
             .ForMember(x => x.PasswordHash, x => x.MapFrom(y => HashHelper.HashPassword(y.Password)));
+        CreateMap<User, UserDto>();
     }
 }

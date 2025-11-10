@@ -18,9 +18,12 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     public async Task<User?> GetByUserName(string userName)
     {
-        return await _context.Users.Where(x => x.Username == userName).FirstOrDefaultAsync();
+        return await _context.Users.Where(x => x.UserName == userName).FirstOrDefaultAsync();
     }
-
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
     public User GetCurrentUser()
     {
         throw new NotImplementedException();
@@ -30,4 +33,17 @@ public class UserRepository : GenericRepository<User>, IUserRepository
     {
         throw new NotImplementedException();
     }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+
+    public void Update(User user)
+    {
+        _context.Users.Update(user);
+        _context.SaveChanges();
+    }
+
+
 }

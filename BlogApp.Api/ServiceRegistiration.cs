@@ -1,4 +1,6 @@
 ﻿using BlogApp.BusinnesLayer.DTOs.Options;
+using BlogApp.BusinnesLayer.Services.Implements;
+using BlogApp.BusinnesLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -10,6 +12,8 @@ public static class ServiceRegistiration
     public static IServiceCollection AddJwtOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Jwt));
+        services.AddScoped<ISessionService, SessionService>();
+
         return services;
     }
     public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -33,6 +37,20 @@ public static class ServiceRegistiration
                     ValidAudience = jwtOption.Audience,
                     ValidIssuer = jwtOption.Issuer,
                     ClockSkew = TimeSpan.Zero
+                };
+
+                opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/adminChatHub"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 

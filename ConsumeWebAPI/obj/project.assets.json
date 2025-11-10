@@ -7939,11 +7939,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\ConsumeWebAPI.csproj",
+      "projectUniqueName": "C:\\Users\\Ilqar\\Desktop\\API\\BlogApp-API\\ConsumeWebAPI\\ConsumeWebAPI.csproj",
       "projectName": "ConsumeWebAPI",
-      "projectPath": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\ConsumeWebAPI.csproj",
+      "projectPath": "C:\\Users\\Ilqar\\Desktop\\API\\BlogApp-API\\ConsumeWebAPI\\ConsumeWebAPI.csproj",
       "packagesPath": "C:\\Users\\Ilqar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\obj\\",
+      "outputPath": "C:\\Users\\Ilqar\\Desktop\\API\\BlogApp-API\\ConsumeWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -7965,8 +7965,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\BlogApp.Api.csproj": {
-              "projectPath": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\BlogApp.Api.csproj"
+            "C:\\Users\\Ilqar\\Desktop\\API\\BlogApp-API\\BlogApp.Api\\BlogApp.Api.csproj": {
+              "projectPath": "C:\\Users\\Ilqar\\Desktop\\API\\BlogApp-API\\BlogApp.Api\\BlogApp.Api.csproj"
             }
           }
         }

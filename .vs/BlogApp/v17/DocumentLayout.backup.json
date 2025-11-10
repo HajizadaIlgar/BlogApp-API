@@ -1,255 +1,71 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\",
+  "WorkspaceRootPath": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{17838AB8-2564-476F-8607-E6FF8FCA78AD}|ConsumeWebAPI\\ConsumeWebAPI.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\consumewebapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{17838AB8-2564-476F-8607-E6FF8FCA78AD}|ConsumeWebAPI\\ConsumeWebAPI.csproj|solutionrelative:consumewebapi\\controllers\\categorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{17838AB8-2564-476F-8607-E6FF8FCA78AD}|ConsumeWebAPI\\ConsumeWebAPI.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\consumewebapi\\mappers\\categoryprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{17838AB8-2564-476F-8607-E6FF8FCA78AD}|ConsumeWebAPI\\ConsumeWebAPI.csproj|solutionrelative:consumewebapi\\mappers\\categoryprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\services\\implements\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\services\\implements\\categoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|solutionrelative:blogapp.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{17838AB8-2564-476F-8607-E6FF8FCA78AD}|ConsumeWebAPI\\ConsumeWebAPI.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\consumewebapi\\models\\categoryvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{17838AB8-2564-476F-8607-E6FF8FCA78AD}|ConsumeWebAPI\\ConsumeWebAPI.csproj|solutionrelative:consumewebapi\\models\\categoryvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\services\\implements\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\services\\implements\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\services\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\services\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\services\\implements\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\services\\implements\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\externalservices\\implements\\jwttokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\externalservices\\implements\\jwttokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|c:\\users\\ilqar\\desktop\\general\\api\\blogapp-api\\blogapp.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|solutionrelative:blogapp.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.api\\serviceregistiration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|solutionrelative:blogapp.api\\serviceregistiration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|c:\\users\\ilqar\\desktop\\general\\api\\blogapp-api\\blogapp.api\\hubs\\lotoroommanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|solutionrelative:blogapp.api\\hubs\\lotoroommanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\externalservices\\interfaces\\ijwttokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\externalservices\\interfaces\\ijwttokenhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\dtos\\options\\jwtoptions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\dtos\\options\\jwtoptions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|c:\\users\\ilqar\\desktop\\blogapp\\blogapp\\blogapp.businneslayer\\services\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FDB25775-F6CC-4713-A7ED-E885821471B6}|BlogApp.BusinnesLayer\\BlogApp.BusinnesLayer.csproj|solutionrelative:blogapp.businneslayer\\services\\interfaces\\iauthservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|c:\\users\\ilqar\\desktop\\general\\api\\blogapp-api\\blogapp.api\\hubs\\lotohub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C6AEF175-6D20-4029-9985-F24347F26C50}|BlogApp.Api\\BlogApp.Api.csproj|solutionrelative:blogapp.api\\hubs\\lotohub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
     {
-      "Orientation": 1,
+      "Orientation": 0,
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 25,
-          "SelectedChildIndex": 2,
+          "DockedWidth": 326,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CategoryProfile.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\Mappers\\CategoryProfile.cs",
-              "RelativeDocumentMoniker": "ConsumeWebAPI\\Mappers\\CategoryProfile.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\Mappers\\CategoryProfile.cs",
-              "RelativeToolTip": "ConsumeWebAPI\\Mappers\\CategoryProfile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-07T22:05:24.304Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "BlogApp.Api\\Properties\\launchSettings.json",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\Properties\\launchSettings.json",
-              "RelativeToolTip": "BlogApp.Api\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-01-07T21:21:24.604Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CategoryController.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\Controllers\\CategoryController.cs",
-              "RelativeDocumentMoniker": "ConsumeWebAPI\\Controllers\\CategoryController.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\Controllers\\CategoryController.cs",
-              "RelativeToolTip": "ConsumeWebAPI\\Controllers\\CategoryController.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAcwBcAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-07T20:29:11.578Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CategoryVM.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\Models\\CategoryVM.cs",
-              "RelativeDocumentMoniker": "ConsumeWebAPI\\Models\\CategoryVM.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\ConsumeWebAPI\\Models\\CategoryVM.cs",
-              "RelativeToolTip": "ConsumeWebAPI\\Models\\CategoryVM.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-07T20:27:11.866Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "IUserService.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Interfaces\\IUserService.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\Services\\Interfaces\\IUserService.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Interfaces\\IUserService.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\Services\\Interfaces\\IUserService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T00:52:44.161Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Implements\\UserService.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\Services\\Implements\\UserService.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Implements\\UserService.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\Services\\Implements\\UserService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAQwBQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T00:49:49.381Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\BlogApp.Api\\Program.cs",
               "RelativeDocumentMoniker": "BlogApp.Api\\Program.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\Program.cs",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\BlogApp.Api\\Program.cs",
               "RelativeToolTip": "BlogApp.Api\\Program.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAkwEQAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAIIAAAAAAAAAAAAYwK0AAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:54:34.499Z"
+              "WhenOpened": "2025-11-10T14:02:13.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "JwtOptions.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\DTOs\\Options\\JwtOptions.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\DTOs\\Options\\JwtOptions.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\DTOs\\Options\\JwtOptions.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\DTOs\\Options\\JwtOptions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAArAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "LotoRoomManager.cs",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\BlogApp.Api\\Hubs\\LotoRoomManager.cs",
+              "RelativeDocumentMoniker": "BlogApp.Api\\Hubs\\LotoRoomManager.cs",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\BlogApp.Api\\Hubs\\LotoRoomManager.cs",
+              "RelativeToolTip": "BlogApp.Api\\Hubs\\LotoRoomManager.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAQwEQAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:49:54.412Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ServiceRegistiration.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\ServiceRegistiration.cs",
-              "RelativeDocumentMoniker": "BlogApp.Api\\ServiceRegistiration.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.Api\\ServiceRegistiration.cs",
-              "RelativeToolTip": "BlogApp.Api\\ServiceRegistiration.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAkwCIAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:47:36.941Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "JwtTokenHandler.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\ExternalServices\\Implements\\JwtTokenHandler.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\ExternalServices\\Implements\\JwtTokenHandler.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\ExternalServices\\Implements\\JwtTokenHandler.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\ExternalServices\\Implements\\JwtTokenHandler.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAuwBkAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:31:25.21Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "IJwtTokenHandler.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\ExternalServices\\Interfaces\\IJwtTokenHandler.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\ExternalServices\\Interfaces\\IJwtTokenHandler.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\ExternalServices\\Interfaces\\IJwtTokenHandler.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\ExternalServices\\Interfaces\\IJwtTokenHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:30:43.51Z"
+              "WhenOpened": "2025-11-10T14:00:55.57Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "CategoryService.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Implements\\CategoryService.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\Services\\Implements\\CategoryService.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Implements\\CategoryService.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\Services\\Implements\\CategoryService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAoAAAAAAAAAA==",
+              "Title": "LotoHub.cs",
+              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\BlogApp.Api\\Hubs\\LotoHub.cs",
+              "RelativeDocumentMoniker": "BlogApp.Api\\Hubs\\LotoHub.cs",
+              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\General\\API\\BlogApp-API\\BlogApp.Api\\Hubs\\LotoHub.cs",
+              "RelativeToolTip": "BlogApp.Api\\Hubs\\LotoHub.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAYwJIAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T22:12:19.056Z",
+              "WhenOpened": "2025-11-10T13:59:54.164Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Implements\\AuthService.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\Services\\Implements\\AuthService.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Implements\\AuthService.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\Services\\Implements\\AuthService.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAqwCEAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T19:38:16.562Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "IAuthService.cs",
-              "DocumentMoniker": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Interfaces\\IAuthService.cs",
-              "RelativeDocumentMoniker": "BlogApp.BusinnesLayer\\Services\\Interfaces\\IAuthService.cs",
-              "ToolTip": "C:\\Users\\Ilqar\\Desktop\\BlogApp\\BlogApp\\BlogApp.BusinnesLayer\\Services\\Interfaces\\IAuthService.cs",
-              "RelativeToolTip": "BlogApp.BusinnesLayer\\Services\\Interfaces\\IAuthService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T19:37:55.629Z"
-            }
-          ]
-        },
-        {
-          "DockedHeight": 25,
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }

@@ -1,8 +1,56 @@
 [
   {
+    "ContainingType": "BlogApp.Api.Controllers.AdminUserController",
+    "Method": "BanUser",
+    "RelativePath": "api/admin/users/ban",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BlogApp.BusinnesLayer.DTOs.UserDTOs.BanDTO.BanUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AdminUserController",
+    "Method": "UnbanUser",
+    "RelativePath": "api/admin/users/unban",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BlogApp.BusinnesLayer.DTOs.UserDTOs.BanDTO.UnbanUserRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "BalanceUpdate",
+    "RelativePath": "api/Auths/BalanceUpdate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "balance",
+        "Type": "BlogApp.BusinnesLayer.DTOs.UserDTOs.BalanceDTO.BalanceDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "BlogApp.Api.Controllers.AuthsController",
     "Method": "Delete",
-    "RelativePath": "api/Auths",
+    "RelativePath": "api/Auths/Delete",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -13,6 +61,74 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "ForgetPassword",
+    "RelativePath": "api/Auths/ForgetPassword/forget-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BlogApp.Core.Entities.ForgetPasswordRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "GetAllUser",
+    "RelativePath": "api/Auths/GetAllUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "GetByUserId",
+    "RelativePath": "api/Auths/GetByUserId",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "GetByUserName",
+    "RelativePath": "api/Auths/GetByUserName",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "username",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "GetCurrentUser",
+    "RelativePath": "api/Auths/GetCurrentUser/current",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -42,6 +158,22 @@
       {
         "Name": "dto",
         "Type": "BlogApp.BusinnesLayer.DTOs.UserDTOs.RegisterCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.AuthsController",
+    "Method": "ResetPassword",
+    "RelativePath": "api/Auths/ResetPassword/reset-password",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "BlogApp.Core.Entities.ResetPasswordRequest",
         "IsRequired": true
       }
     ],
@@ -105,6 +237,22 @@
       {
         "Name": "password",
         "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "BlogApp.Api.Controllers.ChatController",
+    "Method": "UploadImage",
+    "RelativePath": "api/Chat/upload-image",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
     ],

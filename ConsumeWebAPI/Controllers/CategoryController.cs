@@ -3,7 +3,7 @@ using ConsumeWebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsumeWebAPI.Controllers;
-
+[Route("api/[controller]/[action]")]
 public class CategoryController : Controller
 {
     Uri MyAPIAddress = new Uri("https://localhost:7046/api");
